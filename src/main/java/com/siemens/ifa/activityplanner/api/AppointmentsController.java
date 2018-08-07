@@ -9,18 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-public class ActivitiesController {
+public class AppointmentsController {
     @Autowired
     AppointmentsRepo appointmentsRepo;
 
     @RequestMapping(path = "/appointments", method = RequestMethod.GET)
-    public ResponseEntity test() {
+    public ResponseEntity list() {
         List<Appointment> appointments = appointmentsRepo.findAll();
         if(appointments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

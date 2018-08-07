@@ -4,6 +4,17 @@ Activity Planner with Integrations (reserve hotel, book restaurant)
  - integrations (buy tickets, book restaurant)
  - predefiend daily plans (adv): o serie de activitati facute de altcineva la o anumita
 
+### API
+
+/appointments GET find all appointments
+/appointments POST create an appointment
+/appointment/{id} PUT update an app (i.e /appointment/1)
+/appointments/{id} DELETE an appointment
+
+/my-day - chronological list of appointments.
+
+//sim a restaurant booking service.
+
 
 -------------------
 ### HTTP Protocol
@@ -45,3 +56,5 @@ Request: header, body (optional)
 * maven the build tool
 * spring beans (scopes)
 * builder pattern
+* db migrations -> flyway
+* REST API design (video)

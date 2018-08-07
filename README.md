@@ -42,5 +42,6 @@ Request: header, body (optional)
 
 ### Look into
 
+* maven the build tool
 * spring beans (scopes)
 * builder pattern

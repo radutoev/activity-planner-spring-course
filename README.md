@@ -8,7 +8,7 @@ Activity Planner with Integrations (reserve hotel, book restaurant)
 
 /appointments GET find all appointments
 /appointments POST create an appointment
-/appointment/{id} PUT update an app (i.e /appointment/1)
+/appointments/{id} PUT update an app (i.e /appointment/1)
 /appointments/{id} DELETE an appointment
 
 /my-day - chronological list of appointments.

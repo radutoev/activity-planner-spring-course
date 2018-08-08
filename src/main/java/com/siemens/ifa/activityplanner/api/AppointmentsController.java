@@ -1,10 +1,14 @@
 package com.siemens.ifa.activityplanner.api;
 
+import com.siemens.ifa.activityplanner.InfoMessage;
 import com.siemens.ifa.activityplanner.model.Appointment;
 import com.siemens.ifa.activityplanner.repo.AppointmentsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +20,9 @@ public class AppointmentsController {
     @Autowired
     AppointmentsRepo appointmentsRepo;
 
-    @RequestMapping(path = "/appointments", method = RequestMethod.GET)
+    @RequestMapping(path = "/appointments",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity list() {
         List<Appointment> appointments = appointmentsRepo.findAll();
         if(appointments.isEmpty()) {
@@ -24,5 +30,20 @@ public class AppointmentsController {
         } else {
             return ResponseEntity.ok(appointments);
         }
+    }
+
+    @RequestMapping(path = "/appointments",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity create(@RequestBody Appointment appointment) {
+        try {
+            Appointment created = appointmentsRepo.save(appointment);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new InfoMessage("Provided appointment is invalid"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 }

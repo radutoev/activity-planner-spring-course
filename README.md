@@ -58,3 +58,4 @@ Request: header, body (optional)
 * builder pattern
 * db migrations -> flyway
 * REST API design (video)
+* Look into bean validation (jsr 303)

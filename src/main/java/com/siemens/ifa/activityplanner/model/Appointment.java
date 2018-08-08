@@ -1,6 +1,7 @@
 package com.siemens.ifa.activityplanner.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "start_time", nullable = false)
+    @Column(name = "start_time", nullable = false) //jpa
     private Date startTime;
 
     @Column(name = "end_time", nullable = false)

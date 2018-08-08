@@ -4,17 +4,13 @@ import com.siemens.ifa.activityplanner.InfoMessage;
 import com.siemens.ifa.activityplanner.model.Appointment;
 import com.siemens.ifa.activityplanner.repo.AppointmentsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,13 +36,29 @@ public class AppointmentsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@RequestBody Appointment appointment) {
         if(isValid(appointment)) {
+            //ACID (atomicity, consistency, integrity, durability)
             Appointment created = appointmentsRepo.save(appointment);
+            //
+            return ResponseEntity
+                    .created(URI.create("http://localhost:8081/appointments/" + created.getId()))
+                    .body(created);
         } else {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new InfoMessage("Provided appointment is invalid"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+
+    @RequestMapping(path = "/appointments/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity get(@PathVariable("id") Integer id) {
+        Appointment a = appointmentsRepo.findOne(id);
+        if(a != null) {
+            return ResponseEntity.ok(a);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private static boolean isValid(Appointment appointment) {

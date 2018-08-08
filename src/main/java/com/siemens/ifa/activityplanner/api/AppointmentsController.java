@@ -3,6 +3,7 @@ package com.siemens.ifa.activityplanner.api;
 import com.siemens.ifa.activityplanner.InfoMessage;
 import com.siemens.ifa.activityplanner.model.Appointment;
 import com.siemens.ifa.activityplanner.repo.AppointmentsRepo;
+import com.siemens.ifa.activityplanner.service.AppointmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AppointmentsController {
     @Autowired
     AppointmentsRepo appointmentsRepo;
+
+    @Autowired
+    AppointmentsService appointmentsService;
 
     @RequestMapping(path = "/appointments",
             method = RequestMethod.GET,
@@ -53,12 +58,14 @@ public class AppointmentsController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity get(@PathVariable("id") Integer id) {
-        Appointment a = appointmentsRepo.findOne(id);
-        if(a != null) {
-            return ResponseEntity.ok(a);
+        Optional<Appointment> maybeApp = appointmentsService.find(id);
+
+        if(maybeApp.isPresent()) {
+            return ResponseEntity.ok(maybeApp);
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
     private static boolean isValid(Appointment appointment) {

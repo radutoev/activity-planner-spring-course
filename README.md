@@ -60,3 +60,6 @@ Request: header, body (optional)
 * db migrations -> flyway
 * REST API design (video)
 * Look into bean validation (jsr 303)
+
+
+req -> controller (dummy as possible) -> service -> repo
